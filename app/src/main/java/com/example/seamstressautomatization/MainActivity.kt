@@ -123,7 +123,7 @@ fun BottomNavigationBar(navController: NavHostController) {
 
                 // it currentRoute is equal then its selected route
                 selected = currentRoute == navItem.route,
-
+//sadasd
                 // navigate on click
                 onClick = {
                     navController.navigate(navItem.route)
