@@ -31,7 +31,9 @@ import com.example.seamstressautomatization.Screens.Parts
 import com.example.seamstressautomatization.Screens.Stuff
 import com.example.seamstressautomatization.ui.theme.Dimens.textSizeSmall
 import com.example.seamstressautomatization.ui.theme.SeamstressAutomatizationTheme
+import com.example.seamstressautomatization.ui.theme.primaryGreen
 import com.example.seamstressautomatization.ui.theme.quaternaryGreen
+import com.example.seamstressautomatization.ui.theme.secondaryGreen
 import com.example.seamstressautomatization.ui.theme.tertiaryGreen
 import com.example.seamstressautomatization.utilities.Constants
 
@@ -104,7 +106,7 @@ fun BottomNavigationBar(navController: NavHostController) {
     BottomNavigation(
 
         // set background color
-        backgroundColor = tertiaryGreen) {
+        backgroundColor = primaryGreen) {
 
         // observe the backstack
         val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -129,12 +131,12 @@ fun BottomNavigationBar(navController: NavHostController) {
 
                 // Icon of navItem
                 icon = {
-                    Icon(imageVector = navItem.icon, contentDescription = navItem.label)
+                    Icon(imageVector = navItem.icon, contentDescription = navItem.label, tint = Color.Black)
                 },
 
                 // label
                 label = {
-                    Text(text = navItem.label, fontSize = textSizeSmall)
+                    Text(text = navItem.label, fontSize = textSizeSmall, color = Color.Black)
                 },
                 alwaysShowLabel = false
             )
