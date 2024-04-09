@@ -1,30 +1,41 @@
 package com.example.seamstressautomatization.data.repositories
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import com.example.seamstressautomatization.data.DAOs.StuffDao
 import com.example.seamstressautomatization.data.entities.Stuff
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
 
-interface StuffRepository {
-    /**
-     * Retrieve all the stuff members from the given data source.
-     */
-    fun getAllStuffStream(): Flow<List<Stuff>>
+class StuffRepository(private val stuffDao: StuffDao) {
 
-    /**
-     * Retrieve a stuff member from the given data source that matches with the [id].
-     */
-    fun getItemStream(id: Int): Flow<Stuff?>
+    val allStuff: LiveData<List<Stuff>> = stuffDao.getAllItems()
+    val searchResults = MutableLiveData<List<Stuff>>()
+    private val coroutineScope = CoroutineScope(Dispatchers.Main)
 
-    /**
-     * Insert stuff member in the data source
-     */
-    suspend fun insertStuff(stuff: Stuff)
+    fun insertStuff(newstuff: Stuff){
+        coroutineScope.launch (Dispatchers.IO){
+            stuffDao.insert(newstuff)
+        }
+    }
 
-    /**
-     * Delete stuff member from the data source
-     */
-    suspend fun deleteStuff(stuff: Stuff)
+    fun deleteStuff(name: String) {
+        coroutineScope.launch(Dispatchers.IO) {
+            stuffDao.delete(name)
+        }
+    }
 
-    /**
-     * Update stuff in the data source
-     */
-    suspend fun updateStuff(stuff: Stuff)
+    fun findStuff(name: String) {
+        coroutineScope.launch(Dispatchers.Main) {
+            searchResults.value = asyncFind(name).await()
+        }
+    }
+
+    private fun asyncFind(name: String): Deferred<List<Stuff>?> =
+        coroutineScope.async(Dispatchers.IO) {
+            return@async stuffDao.getItem(name)
+        }
 }

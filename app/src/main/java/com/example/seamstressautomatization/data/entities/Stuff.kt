@@ -1,13 +1,17 @@
 package com.example.seamstressautomatization.data.entities
 
+import androidx.annotation.NonNull
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "stuff")
 data class Stuff(
+
     @PrimaryKey(autoGenerate = true)
-    val id: Int = 0,
-    val stuff_name: String,
-    val status: String,
-    val occupation: String
+    var id: Int = 0,
+
+    var stuff_name: String,
+    var salary: Int,
+//    val occupation: String
+
 )

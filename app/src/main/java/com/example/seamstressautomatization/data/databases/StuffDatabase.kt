@@ -10,17 +10,24 @@ import com.example.seamstressautomatization.data.entities.Stuff
 @Database (entities = [Stuff::class], version = 1, exportSchema = false)
 abstract class StuffDatabase : RoomDatabase() {
     abstract fun stuffDao(): StuffDao
+
     companion object {
-        @Volatile
+
         private var Instance: StuffDatabase? = null
 
         fun getDatabase(context: Context): StuffDatabase {
-            return Instance?: synchronized(this){
-                Room.databaseBuilder(context, StuffDatabase::class.java, "stuff_database")
-                    .fallbackToDestructiveMigration()
-                    .build()
-                    .also { Instance = it }
-
+            synchronized(this) {
+                var instance = Instance
+                if (instance == null) {
+                    instance = Room.databaseBuilder(
+                        context.applicationContext,
+                        StuffDatabase::class.java,
+                        "product_database"
+                    ).fallbackToDestructiveMigration()
+                        .build()
+                    Instance = instance
+                }
+                return instance
             }
         }
     }
