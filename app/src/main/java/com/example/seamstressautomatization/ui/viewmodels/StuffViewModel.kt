@@ -12,7 +12,7 @@ class StuffViewModel(application: Application) : ViewModel() {
     val allStuff: LiveData<List<Stuff>>
     private val repository : StuffRepository
     val searchResults: MutableLiveData<List<Stuff>>
-
+    var id_count = 0
     init {
         val stuffDb = StuffDatabase.getDatabase(application)
         val stuffDao = stuffDb.stuffDao()
@@ -32,5 +32,9 @@ class StuffViewModel(application: Application) : ViewModel() {
 
     fun deleteStuff(name: String){
         repository.deleteStuff(name)
+    }
+
+    fun deleteAll(){
+        repository.deleteAll()
     }
 }

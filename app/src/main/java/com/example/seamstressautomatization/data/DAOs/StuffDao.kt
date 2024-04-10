@@ -25,4 +25,7 @@ interface StuffDao {
 
     @Query("SELECT * from stuff")
     fun getAllItems(): LiveData<List<Stuff>>
+
+    @Query("DELETE FROM stuff")
+    fun deleteAll()
 }

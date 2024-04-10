@@ -7,6 +7,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -17,6 +18,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
@@ -24,12 +26,15 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.AddCircle
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme.colorScheme
+import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.runtime.Composable
@@ -46,6 +51,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.Placeholder
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -79,17 +85,17 @@ fun StuffSetup(viewModel: StuffViewModel)
 fun TitleRow(head1: String, head2: String, head3: String) {
     Row(
         modifier = Modifier
-            .background(MaterialTheme.colors.primary)
+            .background(colorScheme.primary)
             .fillMaxWidth()
             .padding(5.dp)
     ) {
-        Text(head1, color = Color.White,
+        Text(head1, color = colorScheme.surface,
             modifier = Modifier
                 .weight(0.1f))
-        Text(head2, color = Color.White,
+        Text(head2, color = colorScheme.surface,
             modifier = Modifier
                 .weight(0.2f))
-        Text(head3, color = Color.White,
+        Text(head3, color = colorScheme.surface,
             modifier = Modifier.weight(0.2f))
     }
 }
@@ -101,10 +107,15 @@ fun StuffRow(id: Int, name: String, salary: Int) {
             .fillMaxWidth()
             .padding(5.dp)
     ) {
-        Text(id.toString(), modifier = Modifier
-            .weight(0.1f))
-        Text(name, modifier = Modifier.weight(0.2f))
-        Text(salary.toString(), modifier = Modifier.weight(0.2f))
+        OutlinedCard(shape = CardDefaults.elevatedShape, border = BorderStroke(0.5.dp,Color.Black)
+        ) {
+           Row {
+               Text(id.toString(), modifier = Modifier
+                   .weight(0.1f))
+               Text(name, modifier = Modifier.weight(0.2f))
+               Text(salary.toString(), modifier = Modifier.weight(0.2f))
+           }
+        }
     }
 }
 
@@ -113,7 +124,8 @@ fun CustomTextField(
     title: String,
     textState: String,
     onTextChange: (String) -> Unit,
-    keyboardType: KeyboardType
+    keyboardType: KeyboardType,
+    placeholder: String,
 ) {
     OutlinedTextField(
         value = textState,
@@ -123,9 +135,18 @@ fun CustomTextField(
         ),
         singleLine = true,
         label = { Text(title)},
-        modifier = Modifier.padding(10.dp),
-        textStyle = TextStyle(fontWeight = FontWeight.Bold,
-            fontSize = 30.sp)
+        modifier = Modifier.padding(16.dp),
+        placeholder = {placeholder},
+        colors = OutlinedTextFieldDefaults.colors(
+                    focusedBorderColor = Color.Black,
+                    unfocusedBorderColor = Color.DarkGray,
+                    focusedTextColor = Color.Black,
+                    unfocusedTextColor = Color.DarkGray,
+                ),
+        shape = RoundedCornerShape(16.dp),
+        trailingIcon = {if (textState.isNotEmpty()) IconButton(onClick = { onTextChange("") }) {
+        Icon(Icons.Filled.Clear, contentDescription = null)
+        } else null}
     )
 }
 
@@ -142,83 +163,97 @@ fun Stuff(allStuff: List<Stuff>, searchResults: List<Stuff>, viewModel: StuffVie
     }
     val onStuffNameChange = { text: String -> stuffName = text }
     val onStuffSalaryChange = { text: String -> stuffSalary = text }
-    var id_count = 0
+
     Column(
         horizontalAlignment = CenterHorizontally,
         modifier = Modifier
             .fillMaxWidth()
     ) {
-        CustomTextField(
-            title = "Имя",
-            textState = stuffName,
-            onTextChange = onStuffNameChange,
-            keyboardType = KeyboardType.Text
-        )
 
-        CustomTextField(
-            title = "Зарплата",
-            textState = stuffSalary,
-            onTextChange = onStuffSalaryChange,
-            keyboardType = KeyboardType.Number
-        )
+        Column (verticalArrangement = Arrangement.Bottom, horizontalAlignment = CenterHorizontally, modifier = Modifier
+            .fillMaxWidth()
+            .weight(12f)){
+            CustomTextField(
+                title = "Имя",
+                textState = stuffName,
+                onTextChange = onStuffNameChange,
+                keyboardType = KeyboardType.Text,
+                placeholder = "Введите имя..."
+            )
 
+            CustomTextField(
+                title = "Зарплата",
+                textState = stuffSalary,
+                onTextChange = onStuffSalaryChange,
+                keyboardType = KeyboardType.Number,
+                placeholder = "Введите зарплату..."
+            )
+        }
         Row(
             horizontalArrangement = Arrangement.SpaceEvenly,
+            verticalAlignment = Alignment.Bottom,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(10.dp)
+                .weight(1f)
         ) {
-            Button(onClick = {
+            IconButton(onClick = {
                 if (stuffSalary.isNotEmpty()) {
                     viewModel.insertStuff(
                         Stuff(
-                            id_count,
+                            viewModel.id_count,
                             stuffName,
                             stuffSalary.toInt()
                         )
                     )
                     searching = false
-                    id_count++
+                    viewModel.id_count++
                 }
             }) {
-                Text("Add")
+                Icon(Icons.Filled.Add, contentDescription = "add stuff")
             }
 
-            Button(onClick = {
+            IconButton(onClick = {
                 searching = true
                 viewModel.findStuff(stuffName)
             }) {
-                Text("Search")
+                Icon(Icons.Filled.Search, contentDescription = "search stuff")
             }
 
-            Button(onClick = {
+            IconButton(onClick = {
                 searching = false
                 viewModel.deleteStuff(stuffName)
-                id_count--
+                viewModel.id_count--
             }) {
-                Text("Delete")
+                Icon(Icons.Filled.Delete, contentDescription = "delete stuff")
             }
 
-            Button(onClick = {
+            IconButton(onClick = {
                 searching = false
                 stuffName = ""
                 stuffSalary = ""
             }) {
-                Text("Clear")
+                Icon(Icons.Filled.Clear, contentDescription = "clear field")
+            }
+            
+            Button(onClick = {
+                viewModel.deleteAll()
+                viewModel.id_count = 0
+                             }, colors = ButtonDefaults.buttonColors(backgroundColor = colorScheme.primary)) {
+                Text(text = "Очистить таблицу", color = Color.Red, fontSize = 10.sp)
             }
         }
     }
     LazyColumn(
         Modifier
             .fillMaxWidth()
-            .padding(10.dp)
+            .padding(10.dp),
+        verticalArrangement = Arrangement.Top
     ) {
         val list = if (searching) searchResults else allStuff
-
         item {
-            TitleRow(head1 = "ID", head2 = "Stuff", head3 = "Salary")
+            TitleRow(head1 = "Номер", head2 = "Имя", head3 = "Зарплата")
         }
-
         items(list) { stuff ->
             StuffRow(
                 id = stuff.id, name = stuff.stuff_name,
@@ -226,146 +261,6 @@ fun Stuff(allStuff: List<Stuff>, searchResults: List<Stuff>, viewModel: StuffVie
             )
         }
     }
-
-
-//    val focusManager = LocalFocusManager.current
-//    val stuffAmount = rememberSaveable { mutableIntStateOf(5) }
-//    val stuffList = remember {
-//        (mutableStateOf(
-//            listOf(
-//                "Нагора",
-//                "Гульнаё",
-//                "Ином",
-//                "Шукур",
-//                "Азам",
-//            )
-//        )
-//                )
-//    }
-//
-//    val searchText = rememberSaveable { mutableStateOf("") }
-//    val filteredStuffList = rememberSaveable { mutableStateOf(stuffList.value) }
-//    var isSearch = rememberSaveable { mutableStateOf(true) }
-//    fun deleteStuff(item: String) {
-//        val updatedList = stuffList.value.toMutableList()
-//        updatedList.remove(item)
-//        stuffList.value = updatedList
-//    }
-//
-//    fun addStuff(item: String) {
-//        val updatedList = stuffList.value.toMutableList()
-//        updatedList.add(item)
-//        stuffList.value = updatedList
-//    }
-//
-//    val trailingIconView = @Composable {
-//        androidx.compose.material3.IconButton(onClick = {
-//            if (isSearch.value) {
-//                searchText.value = ""
-//                filteredStuffList.value = stuffList.value
-//                focusManager.clearFocus()
-//            } else {
-//                addStuff(searchText.value)
-//                stuffAmount.intValue += 1
-//                searchText.value = ""
-//                filteredStuffList.value = stuffList.value
-//                focusManager.clearFocus()
-//            }
-//        }) {
-//            if (isSearch.value) {
-//                androidx.compose.material3.Icon(
-//                    Icons.Filled.Close,
-//                    contentDescription = "Close Button",
-//                    modifier = Modifier.size(25.dp),
-//                    tint = Color.Black
-//                )
-//            } else {
-//                androidx.compose.material3.Icon(
-//                    Icons.Filled.Add,
-//                    contentDescription = "Add Button",
-//                    modifier = Modifier.size(25.dp),
-//                    tint = Color.Black
-//                )
-//            }
-//        }
-//    }
-//
-//    Column(
-//        modifier = Modifier.fillMaxSize(),
-//        verticalArrangement = Arrangement.Top,
-//        horizontalAlignment = Alignment.CenterHorizontally
-//    ) {
-//        Row {
-//            OutlinedTextField(
-//                value = searchText.value,
-//                onValueChange = { searchText.value = it },
-//                modifier = Modifier.padding(16.dp),
-//                placeholder = {
-//                    androidx.compose.material3.Text(
-//                        if (isSearch.value) {
-//                            "Поиск..."
-//                        } else {
-//                            "Добавить..."
-//                        },
-//                        color =  Color.Black
-//                    )
-//                },
-//                colors = OutlinedTextFieldDefaults.colors(
-//                    focusedBorderColor = Color.Black,
-//                    unfocusedBorderColor = Color.DarkGray,
-//                    focusedTextColor = Color.Black,
-//                    unfocusedTextColor = Color.DarkGray,
-//                ),
-//                shape = RoundedCornerShape(16.dp),
-//                singleLine = true,
-//                keyboardActions = KeyboardActions(
-//                    onDone = {
-//                        if (isSearch.value) {
-//                            if (searchText.value.isEmpty()) {
-//                                filteredStuffList.value = stuffList.value
-//                                focusManager.clearFocus()
-//                            } else {
-//                                filteredStuffList.value = stuffList.value.filter {
-//                                    it.contains(searchText.value, true)
-//
-//                                }
-//                                focusManager.clearFocus()
-//                            }
-//                        } else {
-//                            addStuff(searchText.value)
-//                            stuffAmount.intValue += 1
-//                            searchText.value = ""
-//                            filteredStuffList.value = stuffList.value
-//                            focusManager.clearFocus()
-//                        }
-//                    }
-//                ),
-//                trailingIcon = if (searchText.value.isNotEmpty()) trailingIconView else null
-//            )
-//            IconButton(
-//                onClick = { isSearch.value = !isSearch.value },
-//                modifier = Modifier.padding(20.dp)
-//            ) {
-//                Icon(
-//                    if (isSearch.value) {
-//                        Icons.Filled.AddCircle
-//                    } else {
-//                        Icons.Filled.Search
-//                    }, contentDescription = "asda", tint = colorScheme.primary
-//                )
-//            }
-//        }
-//        Text(text = "Количество сотрудников: ${stuffAmount.value}", color =  Color.Black)
-//        LazyColumn(
-//            modifier = Modifier.fillMaxSize(),
-//            verticalArrangement = Arrangement.Top,
-//            content = {
-//                items(filteredStuffList.value) { stuffItem ->
-//                    StuffItem(stuffItem)
-//                }
-//            }
-//        )
-//    }
 }
 
 class StuffViewModelFactory(val application: Application):

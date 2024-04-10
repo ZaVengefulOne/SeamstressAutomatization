@@ -34,6 +34,12 @@ class StuffRepository(private val stuffDao: StuffDao) {
         }
     }
 
+    fun deleteAll(){
+        coroutineScope.launch(Dispatchers.IO) {
+            stuffDao.deleteAll()
+        }
+    }
+
     private fun asyncFind(name: String): Deferred<List<Stuff>?> =
         coroutineScope.async(Dispatchers.IO) {
             return@async stuffDao.getItem(name)
