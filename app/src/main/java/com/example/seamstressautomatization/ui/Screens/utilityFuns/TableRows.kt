@@ -43,7 +43,7 @@ fun TitleRow(head1: String, head2: String, head3: String) {
 }
 
 @Composable
-fun TableRow(id: Int, name: String, stats: Int) {
+fun TableRow(id: Int, name: String, stats: Float) {
     Row(
         modifier = Modifier
             .fillMaxWidth()

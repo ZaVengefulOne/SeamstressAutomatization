@@ -34,12 +34,18 @@ import com.example.seamstressautomatization.Screens.Stuff
 import com.example.seamstressautomatization.Screens.StuffSetup
 import com.example.seamstressautomatization.Screens.StuffViewModelFactory
 import com.example.seamstressautomatization.ui.Screens.BottomNavigationBar
+import com.example.seamstressautomatization.ui.Screens.ClothSetup
+import com.example.seamstressautomatization.ui.Screens.ClothViewModelFactory
 import com.example.seamstressautomatization.ui.Screens.Clothes
 import com.example.seamstressautomatization.ui.Screens.Main
 import com.example.seamstressautomatization.ui.Screens.Parts
+import com.example.seamstressautomatization.ui.Screens.PartsSetup
+import com.example.seamstressautomatization.ui.Screens.PartsViewModelFactory
 import com.example.seamstressautomatization.ui.theme.Dimens.textSizeSmall
 import com.example.seamstressautomatization.ui.theme.SeamstressAutomatizationTheme
+import com.example.seamstressautomatization.ui.viewmodels.ClothesViewModel
 import com.example.seamstressautomatization.ui.viewmodels.MainViewModel
+import com.example.seamstressautomatization.ui.viewmodels.PartsViewModel
 import com.example.seamstressautomatization.ui.viewmodels.StuffViewModel
 import com.example.seamstressautomatization.utilities.Constants
 
@@ -72,6 +78,20 @@ class MainActivity : ComponentActivity() {
                                                 as Application)
                                 )
                             },
+                            clothesViewModel = LocalViewModelStoreOwner.current?.let {
+                                viewModel (
+                                    it, "ClothesViewModel", ClothViewModelFactory(
+                                        LocalContext.current.applicationContext as Application
+                                    )
+                                )
+                            },
+                            partsViewModel = LocalViewModelStoreOwner.current?.let {
+                                viewModel (
+                                    it, "PartsViewModel", PartsViewModelFactory(
+                                        LocalContext.current.applicationContext as Application
+                                    )
+                                )
+                            },
                             padding = padding
                         )
                     }
@@ -85,6 +105,8 @@ class MainActivity : ComponentActivity() {
 fun NavHostContainer(
     navController: NavHostController,
     stuffViewModel: StuffViewModel?,
+    clothesViewModel: ClothesViewModel?,
+    partsViewModel: PartsViewModel?,
     padding: PaddingValues,
 ) {
 
@@ -114,11 +136,15 @@ fun NavHostContainer(
 
             // route : profile
             composable("clothes") {
-                Clothes()
+                if (clothesViewModel != null) {
+                    ClothSetup(clothesViewModel)
+                }
             }
 
             composable("parts") {
-                Parts()
+                if (partsViewModel != null) {
+                    PartsSetup(partsViewModel)
+                }
             }
         })
 
