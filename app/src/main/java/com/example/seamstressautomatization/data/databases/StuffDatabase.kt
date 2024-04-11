@@ -22,7 +22,7 @@ abstract class StuffDatabase : RoomDatabase() {
                     instance = Room.databaseBuilder(
                         context.applicationContext,
                         StuffDatabase::class.java,
-                        "product_database"
+                        "stuff"
                     ).fallbackToDestructiveMigration()
                         .build()
                     Instance = instance

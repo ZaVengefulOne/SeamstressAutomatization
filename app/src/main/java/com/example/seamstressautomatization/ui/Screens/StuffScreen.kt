@@ -63,7 +63,10 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.seamstressautomatization.MainActivity
 import com.example.seamstressautomatization.R
 import com.example.seamstressautomatization.data.entities.Stuff
+import com.example.seamstressautomatization.ui.Screens.utilityFuns.CustomTextField
 import com.example.seamstressautomatization.ui.Screens.utilityFuns.StuffItem
+import com.example.seamstressautomatization.ui.Screens.utilityFuns.TableRow
+import com.example.seamstressautomatization.ui.Screens.utilityFuns.TitleRow
 import com.example.seamstressautomatization.ui.viewmodels.MainViewModel
 import com.example.seamstressautomatization.ui.viewmodels.StuffViewModel
 
@@ -78,75 +81,6 @@ fun StuffSetup(viewModel: StuffViewModel)
         allStuff = allStuff,
         searchResults = searchResults,
         viewModel = viewModel
-    )
-}
-
-@Composable
-fun TitleRow(head1: String, head2: String, head3: String) {
-    Row(
-        modifier = Modifier
-            .background(colorScheme.primary)
-            .fillMaxWidth()
-            .padding(5.dp)
-    ) {
-        Text(head1, color = colorScheme.surface,
-            modifier = Modifier
-                .weight(0.1f))
-        Text(head2, color = colorScheme.surface,
-            modifier = Modifier
-                .weight(0.2f))
-        Text(head3, color = colorScheme.surface,
-            modifier = Modifier.weight(0.2f))
-    }
-}
-
-@Composable
-fun StuffRow(id: Int, name: String, salary: Int) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(5.dp)
-    ) {
-        OutlinedCard(shape = CardDefaults.elevatedShape, border = BorderStroke(0.5.dp,Color.Black)
-        ) {
-           Row {
-               Text(id.toString(), modifier = Modifier
-                   .weight(0.1f))
-               Text(name, modifier = Modifier.weight(0.2f))
-               Text(salary.toString(), modifier = Modifier.weight(0.2f))
-           }
-        }
-    }
-}
-
-@Composable
-fun CustomTextField(
-    title: String,
-    textState: String,
-    onTextChange: (String) -> Unit,
-    keyboardType: KeyboardType,
-    placeholder: String,
-) {
-    OutlinedTextField(
-        value = textState,
-        onValueChange = { onTextChange(it) },
-        keyboardOptions = KeyboardOptions(
-            keyboardType = keyboardType
-        ),
-        singleLine = true,
-        label = { Text(title)},
-        modifier = Modifier.padding(16.dp),
-        placeholder = {placeholder},
-        colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = Color.Black,
-                    unfocusedBorderColor = Color.DarkGray,
-                    focusedTextColor = Color.Black,
-                    unfocusedTextColor = Color.DarkGray,
-                ),
-        shape = RoundedCornerShape(16.dp),
-        trailingIcon = {if (textState.isNotEmpty()) IconButton(onClick = { onTextChange("") }) {
-        Icon(Icons.Filled.Clear, contentDescription = null)
-        } else null}
     )
 }
 
@@ -255,9 +189,9 @@ fun Stuff(allStuff: List<Stuff>, searchResults: List<Stuff>, viewModel: StuffVie
             TitleRow(head1 = "Номер", head2 = "Имя", head3 = "Зарплата")
         }
         items(list) { stuff ->
-            StuffRow(
+            TableRow(
                 id = stuff.id, name = stuff.stuff_name,
-                salary = stuff.salary
+                stats = stuff.salary
             )
         }
     }
