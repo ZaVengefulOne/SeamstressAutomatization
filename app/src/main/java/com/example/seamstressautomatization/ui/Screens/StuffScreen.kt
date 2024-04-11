@@ -86,11 +86,11 @@ fun Stuff(allStuff: List<Stuff>, searchResults: List<Stuff>, viewModel: StuffVie
             )
 
             CustomTextField(
-                title = "Зарплата",
+                title = "Базовая стоимость",
                 textState = stuffSalary,
                 onTextChange = onStuffSalaryChange,
                 keyboardType = KeyboardType.Number,
-                placeholder = "Введите зарплату..."
+                placeholder = "Введите базовую стоимость..."
             )
         }
         Row(
@@ -156,7 +156,7 @@ fun Stuff(allStuff: List<Stuff>, searchResults: List<Stuff>, viewModel: StuffVie
     ) {
         val list = if (searching) searchResults else allStuff
         item {
-            TitleRow(head1 = "Номер", head2 = "Имя", head3 = "Зарплата")
+            TitleRow(head1 = "Номер", head2 = "Имя", head3 = "Базовая стоимость")
         }
         items(list) { stuff ->
             TableRow(

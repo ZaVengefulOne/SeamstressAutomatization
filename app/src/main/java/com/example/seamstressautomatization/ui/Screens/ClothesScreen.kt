@@ -156,7 +156,7 @@ fun Clothes(allClothes: List<Cloth>, searchResults: List<Cloth>, viewModel: Clot
     ) {
         val list = if (searching) searchResults else allClothes
         item {
-            TitleRow(head1 = "Номер", head2 = "Название", head3 = "Стоимость")
+            TitleRow(head1 = "Номер", head2 = "Название", head3 = "Базовая стоимость")
         }
         items(list) { cloth ->
             TableRow(
