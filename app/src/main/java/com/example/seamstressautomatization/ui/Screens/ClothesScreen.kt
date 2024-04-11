@@ -18,6 +18,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -28,11 +29,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.example.seamstressautomatization.R
 import com.example.seamstressautomatization.data.entities.Cloth
 import com.example.seamstressautomatization.ui.Screens.utilityFuns.CustomTextField
 import com.example.seamstressautomatization.ui.Screens.utilityFuns.TableRow
@@ -161,7 +166,8 @@ fun Clothes(allClothes: List<Cloth>, searchResults: List<Cloth>, viewModel: Clot
         items(list) { cloth ->
             TableRow(
                 id = cloth.cloth_id, name = cloth.cloth_name,
-                stats = cloth.base_cloth_payment
+                stats = cloth.base_cloth_payment,
+                icon = ImageVector.vectorResource(R.drawable.baseline_checkroom_24)
             )
         }
     }

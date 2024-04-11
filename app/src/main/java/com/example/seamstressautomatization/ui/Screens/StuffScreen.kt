@@ -17,6 +17,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.runtime.Composable
@@ -86,11 +87,11 @@ fun Stuff(allStuff: List<Stuff>, searchResults: List<Stuff>, viewModel: StuffVie
             )
 
             CustomTextField(
-                title = "Базовая стоимость",
+                title = "Зарплата",
                 textState = stuffSalary,
                 onTextChange = onStuffSalaryChange,
                 keyboardType = KeyboardType.Number,
-                placeholder = "Введите базовую стоимость..."
+                placeholder = "Введите зарплату..."
             )
         }
         Row(
@@ -156,12 +157,13 @@ fun Stuff(allStuff: List<Stuff>, searchResults: List<Stuff>, viewModel: StuffVie
     ) {
         val list = if (searching) searchResults else allStuff
         item {
-            TitleRow(head1 = "Номер", head2 = "Имя", head3 = "Базовая стоимость")
+            TitleRow(head1 = "Номер", head2 = "Имя", head3 = "Зарплата")
         }
         items(list) { stuff ->
             TableRow(
                 id = stuff.id, name = stuff.stuff_name,
-                stats = stuff.salary.toFloat()
+                stats = stuff.salary.toFloat(),
+                icon = Icons.Filled.Person
             )
         }
     }

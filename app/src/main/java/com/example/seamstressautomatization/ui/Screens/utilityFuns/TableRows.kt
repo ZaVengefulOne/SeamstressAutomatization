@@ -2,11 +2,13 @@ package com.example.seamstressautomatization.ui.Screens.utilityFuns
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
@@ -14,52 +16,59 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
 @Composable
 fun TitleRow(head1: String, head2: String, head3: String) {
+    val uniFont = 20.sp
     Row(
         modifier = Modifier
             .background(MaterialTheme.colorScheme.primary)
             .fillMaxWidth()
             .padding(5.dp)
     ) {
+        Text(text= "" ,color = colorScheme.surface, modifier = Modifier.weight(0.1f))
         Text(head1, color = MaterialTheme.colorScheme.surface,
             modifier = Modifier
-                .weight(0.1f))
+                .weight(0.1f), fontSize = uniFont)
         Text(head2, color = MaterialTheme.colorScheme.surface,
             modifier = Modifier
-                .weight(0.2f))
+                .weight(0.1f), fontSize = uniFont)
         Text(head3, color = MaterialTheme.colorScheme.surface,
-            modifier = Modifier.weight(0.2f))
+            modifier = Modifier.weight(0.1f), fontSize = uniFont)
     }
 }
 
 @Composable
-fun TableRow(id: Int, name: String, stats: Float) {
+fun TableRow(id: Int, name: String, stats: Float, icon: ImageVector) {
+    val tableFont = 17.sp
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(5.dp)
     ) {
-        OutlinedCard(shape = CardDefaults.elevatedShape, border = BorderStroke(0.5.dp, Color.Black)
+        Card(shape = CardDefaults.elevatedShape, backgroundColor = colorScheme.tertiary
         ) {
             Row {
-                Text(id.toString(), modifier = Modifier
-                    .weight(0.1f))
-                Text(name, modifier = Modifier.weight(0.2f))
-                Text(stats.toString(), modifier = Modifier.weight(0.2f))
+                Icon(icon, contentDescription = null, modifier = Modifier.background(colorScheme.tertiary).weight(0.1f))
+                Text(id.toString(), modifier = Modifier.weight(0.1f), fontSize = tableFont)
+                Text(name, modifier = Modifier.weight(0.1f), fontSize = tableFont)
+                Text(stats.toString(), modifier = Modifier.weight(0.1f), fontSize = tableFont)
+                }
             }
         }
     }
-}
+
 
 @Composable
 fun CustomTextField(

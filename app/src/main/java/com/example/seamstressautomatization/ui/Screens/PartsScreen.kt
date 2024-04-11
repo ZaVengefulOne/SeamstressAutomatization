@@ -15,6 +15,7 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Search
@@ -165,7 +166,8 @@ fun Parts(allParts: List<Part>, searchResults: List<Part>, viewModel: PartsViewM
         items(list) { part ->
             TableRow(
                 id = part.part_id, name = part.part_name,
-                stats = part.part_base_payment
+                stats = part.part_base_payment,
+                icon = Icons.Filled.Build
             )
         }
     }
