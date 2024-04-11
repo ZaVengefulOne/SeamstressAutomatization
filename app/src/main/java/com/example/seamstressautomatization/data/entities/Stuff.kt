@@ -9,5 +9,5 @@ data class Stuff(
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0,
     var stuff_name: String,
-    var salary: Int,
+    var salary: Float,
 )

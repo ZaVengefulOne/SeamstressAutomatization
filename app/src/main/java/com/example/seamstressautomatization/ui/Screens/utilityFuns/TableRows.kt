@@ -30,7 +30,7 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun TitleRow(head1: String, head2: String, head3: String) {
-    val uniFont = 20.sp
+    val uniFont = 18.sp
     Row(
         modifier = Modifier
             .background(MaterialTheme.colorScheme.primary)
@@ -51,7 +51,7 @@ fun TitleRow(head1: String, head2: String, head3: String) {
 
 @Composable
 fun TableRow(id: Int, name: String, stats: Float, icon: ImageVector) {
-    val tableFont = 17.sp
+    val tableFont = 14.sp
     Row(
         modifier = Modifier
             .fillMaxWidth()

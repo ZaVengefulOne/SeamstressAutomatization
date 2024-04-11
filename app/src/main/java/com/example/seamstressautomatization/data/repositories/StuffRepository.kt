@@ -22,6 +22,12 @@ class StuffRepository(private val stuffDao: StuffDao) {
         }
     }
 
+    fun updateStuff(stuff: Stuff){
+        coroutineScope.launch(Dispatchers.IO) {
+            stuffDao.update(stuff)
+        }
+    }
+
     fun deleteStuff(name: String) {
         coroutineScope.launch(Dispatchers.IO) {
             stuffDao.delete(name)

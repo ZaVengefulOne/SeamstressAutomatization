@@ -8,46 +8,33 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.BottomNavigation
-import androidx.compose.material.BottomNavigationItem
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.seamstressautomatization.Screens.Stuff
 import com.example.seamstressautomatization.Screens.StuffSetup
 import com.example.seamstressautomatization.Screens.StuffViewModelFactory
 import com.example.seamstressautomatization.ui.Screens.BottomNavigationBar
 import com.example.seamstressautomatization.ui.Screens.ClothSetup
 import com.example.seamstressautomatization.ui.Screens.ClothViewModelFactory
-import com.example.seamstressautomatization.ui.Screens.Clothes
 import com.example.seamstressautomatization.ui.Screens.Main
-import com.example.seamstressautomatization.ui.Screens.Parts
+import com.example.seamstressautomatization.ui.Screens.MainViewModelFactory
 import com.example.seamstressautomatization.ui.Screens.PartsSetup
 import com.example.seamstressautomatization.ui.Screens.PartsViewModelFactory
-import com.example.seamstressautomatization.ui.theme.Dimens.textSizeSmall
 import com.example.seamstressautomatization.ui.theme.SeamstressAutomatizationTheme
 import com.example.seamstressautomatization.ui.viewmodels.ClothesViewModel
-import com.example.seamstressautomatization.ui.viewmodels.MainViewModel
+import com.example.seamstressautomatization.ui.viewmodels.HomeViewModel
 import com.example.seamstressautomatization.ui.viewmodels.PartsViewModel
 import com.example.seamstressautomatization.ui.viewmodels.StuffViewModel
-import com.example.seamstressautomatization.utilities.Constants
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -92,6 +79,13 @@ class MainActivity : ComponentActivity() {
                                     )
                                 )
                             },
+                            homeViewModel = LocalViewModelStoreOwner.current?.let {
+                                viewModel(
+                                    it, "MainViewModel", MainViewModelFactory(
+                                        LocalContext.current.applicationContext as Application
+                                    )
+                                )
+                            },
                             padding = padding
                         )
                     }
@@ -107,6 +101,7 @@ fun NavHostContainer(
     stuffViewModel: StuffViewModel?,
     clothesViewModel: ClothesViewModel?,
     partsViewModel: PartsViewModel?,
+    homeViewModel: HomeViewModel?,
     padding: PaddingValues,
 ) {
 
@@ -124,7 +119,9 @@ fun NavHostContainer(
 
             // route : Home
             composable("main") {
-                Main(navController = navController)
+                if (homeViewModel != null) {
+                    Main(navController = navController, homeViewModel= homeViewModel)
+                }
             }
 
             // route : search

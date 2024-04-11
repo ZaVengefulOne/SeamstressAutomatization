@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import com.example.seamstressautomatization.data.DAOs.StuffDao
 import com.example.seamstressautomatization.data.entities.Stuff
 
-@Database (entities = [Stuff::class], version = 1, exportSchema = false)
+@Database (entities = [Stuff::class], version = 2, exportSchema = false)
 abstract class StuffDatabase : RoomDatabase() {
     abstract fun stuffDao(): StuffDao
 

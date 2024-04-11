@@ -108,7 +108,7 @@ fun Stuff(allStuff: List<Stuff>, searchResults: List<Stuff>, viewModel: StuffVie
                         Stuff(
                             viewModel.id_count,
                             stuffName,
-                            stuffSalary.toInt()
+                            stuffSalary.toFloat()
                         )
                     )
                     searching = false
