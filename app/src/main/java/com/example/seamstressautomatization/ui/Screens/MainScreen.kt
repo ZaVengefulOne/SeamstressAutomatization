@@ -80,7 +80,8 @@ fun Main(navController: NavController, homeViewModel: HomeViewModel) {
     var selectedPartName by remember { mutableStateOf(String())}
     var updatingStuffId by remember { mutableIntStateOf(0)}
     var updatingPartModifier by remember { mutableFloatStateOf(0f)}
-    var base_salary by remember { mutableFloatStateOf(0f) }
+    var baseSalary by remember { mutableFloatStateOf(0f) }
+    var timeAmount by remember { mutableIntStateOf(0) }
     var nameExpanded by remember {
         mutableStateOf(false)
     }
@@ -192,13 +193,15 @@ fun Main(navController: NavController, homeViewModel: HomeViewModel) {
                                             onClick = {
                                                 selectedStuffName = item.stuff_name
                                                 updatingStuffId = item.id
-                                                base_salary = item.salary
+                                                baseSalary = item.salary
                                                 nameExpanded = false
                                             })
                                     }
                                 }
                             }
-                                ExposedDropdownMenuBox(expanded = partExpanded, onExpandedChange = { partExpanded = !partExpanded}, modifier = Modifier.weight(1f).padding(8.dp)) {
+                                ExposedDropdownMenuBox(expanded = partExpanded, onExpandedChange = { partExpanded = !partExpanded}, modifier = Modifier
+                                    .weight(1f)
+                                    .padding(8.dp)) {
                                     OutlinedTextField(
                                         value = selectedPartName,
                                         onValueChange = {},
@@ -236,7 +239,7 @@ fun Main(navController: NavController, homeViewModel: HomeViewModel) {
                                 Stuff(
                                     updatingStuffId,
                                     selectedStuffName,
-                                    (base_salary + (updatingPartModifier * enteredValue))
+                                    (baseSalary + (updatingPartModifier * enteredValue))
                                 )
                             )
                             isMenuVisible = false
@@ -244,9 +247,10 @@ fun Main(navController: NavController, homeViewModel: HomeViewModel) {
                             enteredValue = 0
                             selectedStuffName = ""
                         }, colors = ButtonDefaults.buttonColors(backgroundColor = colorScheme.primary)) {
-                            Text("Готово", color = colorScheme.surface)
+                            Text("Готово", color = colorScheme.surface )
                         }
                         Spacer(modifier = Modifier.padding(110.dp))
+//                        OutlinedTextField(value = timeAmount, onValueChange = {timeAmount = it})
                         Button(onClick = {  isMenuVisible = false }, colors = ButtonDefaults.buttonColors(backgroundColor = colorScheme.primary)) {
                             Text(text = "Назад", color = colorScheme.surface)
                         }
@@ -258,10 +262,6 @@ fun Main(navController: NavController, homeViewModel: HomeViewModel) {
 }
 
 
-@Composable
-fun paymentAddingBar(){
-
-}
 
 @Composable
 fun BottomNavigationBar(navController: NavHostController) {

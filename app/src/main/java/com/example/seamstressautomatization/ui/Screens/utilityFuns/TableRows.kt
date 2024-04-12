@@ -2,8 +2,10 @@ package com.example.seamstressautomatization.ui.Screens.utilityFuns
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -38,9 +40,9 @@ fun TitleRow(head1: String, head2: String, head3: String) {
             .padding(5.dp)
     ) {
         Text(text= "" ,color = colorScheme.surface, modifier = Modifier.weight(0.1f))
-        Text(head1, color = MaterialTheme.colorScheme.surface,
-            modifier = Modifier
-                .weight(0.1f), fontSize = uniFont)
+//        Text(head1, color = MaterialTheme.colorScheme.surface,
+//            modifier = Modifier
+//                .weight(0.1f), fontSize = uniFont)
         Text(head2, color = MaterialTheme.colorScheme.surface,
             modifier = Modifier
                 .weight(0.1f), fontSize = uniFont)
@@ -57,13 +59,13 @@ fun TableRow(id: Int, name: String, stats: Float, icon: ImageVector) {
             .fillMaxWidth()
             .padding(5.dp)
     ) {
-        Card(shape = CardDefaults.elevatedShape, backgroundColor = colorScheme.tertiary
+        Card(shape = CardDefaults.elevatedShape, backgroundColor = colorScheme.tertiary, modifier = Modifier.fillMaxWidth()
         ) {
-            Row {
-                Icon(icon, contentDescription = null, modifier = Modifier.background(colorScheme.tertiary).weight(0.1f))
-                Text(id.toString(), modifier = Modifier.weight(0.1f), fontSize = tableFont)
-                Text(name, modifier = Modifier.weight(0.1f), fontSize = tableFont)
-                Text(stats.toString(), modifier = Modifier.weight(0.1f), fontSize = tableFont)
+            Row (horizontalArrangement = Arrangement.Start){
+                Icon(icon, contentDescription = null, modifier = Modifier.background(colorScheme.tertiary).weight(0.3f))
+//                Text(id.toString(), modifier = Modifier.weight(0.1f), fontSize = tableFont)
+                Text(name, modifier = Modifier.weight(1.3f), fontSize = tableFont)
+                Text(stats.toString(), modifier = Modifier.weight(0.7f), fontSize = tableFont)
                 }
             }
         }

@@ -79,11 +79,11 @@ fun Stuff(allStuff: List<Stuff>, searchResults: List<Stuff>, viewModel: StuffVie
             .fillMaxWidth()
             .weight(12f)){
             CustomTextField(
-                title = "Имя",
+                title = "ФИО",
                 textState = stuffName,
                 onTextChange = onStuffNameChange,
                 keyboardType = KeyboardType.Text,
-                placeholder = "Введите имя..."
+                placeholder = "Введите ФИО..."
             )
 
             CustomTextField(
@@ -103,7 +103,7 @@ fun Stuff(allStuff: List<Stuff>, searchResults: List<Stuff>, viewModel: StuffVie
                 .weight(1f)
         ) {
             IconButton(onClick = {
-                if (stuffSalary.isNotEmpty()) {
+                if (stuffSalary.isNotEmpty() and stuffName.isNotEmpty()) {
                     viewModel.insertStuff(
                         Stuff(
                             viewModel.id_count,
@@ -112,6 +112,8 @@ fun Stuff(allStuff: List<Stuff>, searchResults: List<Stuff>, viewModel: StuffVie
                         )
                     )
                     searching = false
+                    stuffName = ""
+                    stuffSalary = ""
                     viewModel.id_count++
                 }
             }) {
@@ -157,7 +159,7 @@ fun Stuff(allStuff: List<Stuff>, searchResults: List<Stuff>, viewModel: StuffVie
     ) {
         val list = if (searching) searchResults else allStuff
         item {
-            TitleRow(head1 = "Номер", head2 = "Имя", head3 = "Зарплата")
+            TitleRow(head1 = "Номер", head2 = "ФИО", head3 = "Зарплата")
         }
         items(list) { stuff ->
             TableRow(
