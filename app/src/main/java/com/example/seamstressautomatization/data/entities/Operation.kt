@@ -3,10 +3,10 @@ package com.example.seamstressautomatization.data.entities
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity (tableName = "parts")
-data class Part(
+@Entity (tableName = "operations")
+data class Operation(
     @PrimaryKey (autoGenerate = true)
-    var part_id: Int,
-    var part_name: String,
-    var part_base_payment: Float
+    var operation_id: Int,
+    var operation_name: String,
+    var duration_sec: Int
 )

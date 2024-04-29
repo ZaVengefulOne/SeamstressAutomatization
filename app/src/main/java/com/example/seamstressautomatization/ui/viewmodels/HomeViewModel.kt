@@ -4,34 +4,34 @@ import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.example.seamstressautomatization.data.databases.ClothesDatabase
-import com.example.seamstressautomatization.data.databases.PartsDatabase
+import com.example.seamstressautomatization.data.databases.OperationsDatabase
 import com.example.seamstressautomatization.data.databases.StuffDatabase
 import com.example.seamstressautomatization.data.entities.Cloth
-import com.example.seamstressautomatization.data.entities.Part
+import com.example.seamstressautomatization.data.entities.Operation
 import com.example.seamstressautomatization.data.entities.Stuff
 import com.example.seamstressautomatization.data.repositories.ClothesRepository
-import com.example.seamstressautomatization.data.repositories.PartsRepository
+import com.example.seamstressautomatization.data.repositories.OperationsRepository
 import com.example.seamstressautomatization.data.repositories.StuffRepository
 
 class HomeViewModel(application: Application) : ViewModel() {
     private val stuffRepository : StuffRepository
     private val clothesRepository: ClothesRepository
-    private val partsRepository: PartsRepository
+    private val operationsRepository: OperationsRepository
     val allStuff: LiveData<List<Stuff>>
-    val allParts: LiveData<List<Part>>
+    val allOperations: LiveData<List<Operation>>
     val allClothes: LiveData<List<Cloth>>
     init {
     val stuffDb = StuffDatabase.getDatabase(application)
         val stuffDao = stuffDb.stuffDao()
         val clothDb = ClothesDatabase.getDatabase(application)
         val clothDao = clothDb.clothesDao()
-        val partsDb = PartsDatabase.getDatabase(application)
-        val partsDao = partsDb.partsDao()
+        val operationsDb = OperationsDatabase.getDatabase(application)
+        val operationsDao = operationsDb.operationsDao()
         stuffRepository = StuffRepository(stuffDao)
         clothesRepository = ClothesRepository(clothDao)
-        partsRepository = PartsRepository(partsDao)
+        operationsRepository = OperationsRepository(operationsDao)
         allStuff = stuffRepository.allStuff
-        allParts = partsRepository.allParts
+        allOperations = operationsRepository.allOperations
         allClothes = clothesRepository.allClothes
 }
     fun findStuff(name: String){

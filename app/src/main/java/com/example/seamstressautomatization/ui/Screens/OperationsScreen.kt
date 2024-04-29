@@ -1,6 +1,7 @@
 package com.example.seamstressautomatization.ui.Screens
 
 import android.app.Application
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -10,6 +11,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
@@ -19,6 +21,7 @@ import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -29,49 +32,47 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.seamstressautomatization.data.entities.Cloth
-import com.example.seamstressautomatization.data.entities.Part
-import com.example.seamstressautomatization.data.entities.Stuff
+import com.example.seamstressautomatization.R
+import com.example.seamstressautomatization.data.entities.Operation
 import com.example.seamstressautomatization.ui.Screens.utilityFuns.CustomTextField
 import com.example.seamstressautomatization.ui.Screens.utilityFuns.TableRow
 import com.example.seamstressautomatization.ui.Screens.utilityFuns.TitleRow
-import com.example.seamstressautomatization.ui.viewmodels.ClothesViewModel
-import com.example.seamstressautomatization.ui.viewmodels.PartsViewModel
-import com.example.seamstressautomatization.ui.viewmodels.StuffViewModel
+import com.example.seamstressautomatization.ui.viewmodels.OperationsViewModel
 
 
 @Composable
-fun PartsSetup (viewModel: PartsViewModel)
+fun OperationsSetup (viewModel: OperationsViewModel)
 {
-    val allParts by viewModel.allParts.observeAsState(listOf())
+    val allOperations by viewModel.allOperations.observeAsState(listOf())
     val searchResults by viewModel.searchResults.observeAsState(listOf())
 
-    Parts(
-        allParts = allParts,
+    Operations(
+        allOperations = allOperations,
         searchResults = searchResults,
         viewModel = viewModel
     )
 }
 
 @Composable
-fun Parts(allParts: List<Part>, searchResults: List<Part>, viewModel: PartsViewModel) {
-    var partName by remember {
+fun Operations(allOperations: List<Operation>, searchResults: List<Operation>, viewModel: OperationsViewModel) {
+    var operationName by remember {
         mutableStateOf("")
     }
-    var partBasePayment by remember {
+    var operationDuration by remember {
         mutableStateOf("")
     }
     var searching by remember {
         mutableStateOf(false)
     }
-    val onPartNameChange = { text: String -> partName = text }
-    val onPartBasePaymentChange = { text: String -> partBasePayment = text }
+    val onOperationNameChange = { text: String -> operationName = text }
+    val onOperationDurationChange = { text: String -> operationDuration = text }
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -84,18 +85,18 @@ fun Parts(allParts: List<Part>, searchResults: List<Part>, viewModel: PartsViewM
             .weight(12f)){
             CustomTextField(
                 title = "Название",
-                textState = partName,
-                onTextChange = onPartNameChange,
+                textState = operationName,
+                onTextChange = onOperationNameChange,
                 keyboardType = KeyboardType.Text,
                 placeholder = "Введите название..."
             )
 
             CustomTextField(
-                title = "Базовая стоимость",
-                textState = partBasePayment,
-                onTextChange = onPartBasePaymentChange,
+                title = "Время выполнения (В секундах)",
+                textState = operationDuration,
+                onTextChange = onOperationDurationChange,
                 keyboardType = KeyboardType.Number,
-                placeholder = "Введите базовую стоимость..."
+                placeholder = "Введите время выполнения..."
             )
         }
         Row(
@@ -107,12 +108,12 @@ fun Parts(allParts: List<Part>, searchResults: List<Part>, viewModel: PartsViewM
                 .weight(1f)
         ) {
             IconButton(onClick = {
-                if (partBasePayment.isNotEmpty()) {
-                    viewModel.insertPart(
-                        Part(
+                if (operationDuration.isNotEmpty()) {
+                    viewModel.insertOperation(
+                        Operation(
                             viewModel.id_count,
-                            partName,
-                            partBasePayment.toFloat()
+                            operationName,
+                            operationDuration.toInt()
                         )
                     )
                     searching = false
@@ -124,14 +125,14 @@ fun Parts(allParts: List<Part>, searchResults: List<Part>, viewModel: PartsViewM
 
             IconButton(onClick = {
                 searching = true
-                viewModel.findPart(partName)
+                viewModel.findOperation(operationName)
             }) {
                 Icon(Icons.Filled.Search, contentDescription = "search stuff")
             }
 
             IconButton(onClick = {
                 searching = false
-                viewModel.deletePart(partName)
+                viewModel.deleteOperation(operationName)
                 viewModel.id_count--
             }) {
                 Icon(Icons.Filled.Delete, contentDescription = "delete stuff")
@@ -139,8 +140,8 @@ fun Parts(allParts: List<Part>, searchResults: List<Part>, viewModel: PartsViewM
 
             IconButton(onClick = {
                 searching = false
-                partName = ""
-                partBasePayment = ""
+                operationName = ""
+                operationDuration = ""
             }) {
                 Icon(Icons.Filled.Clear, contentDescription = "clear field")
             }
@@ -159,23 +160,36 @@ fun Parts(allParts: List<Part>, searchResults: List<Part>, viewModel: PartsViewM
             .padding(10.dp),
         verticalArrangement = Arrangement.Top
     ) {
-        val list = if (searching) searchResults else allParts
+        val list = if (searching) searchResults else allOperations
         item {
-            TitleRow(head1 = "Номер", head2 = "Название", head3 = "Базовая стоимость")
+            TitleRow(head1 = "Название", head2 = "Время операции(секунды)", head3 = "Время операции(минуты)", fontSize = 14.sp)
         }
-        items(list) { part ->
-            TableRow(
-                id = part.part_id, name = part.part_name,
-                stats = part.part_base_payment,
-                icon = Icons.Filled.Build
-            )
+        items(list) { operation ->
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(5.dp)
+            ) {
+                Card(shape = CardDefaults.elevatedShape, backgroundColor = MaterialTheme.colorScheme.tertiary, modifier = Modifier.fillMaxWidth()
+                ) {
+                    Row (horizontalArrangement = Arrangement.Start){
+                        Icon(Icons.Filled.Build, contentDescription = null, modifier = Modifier.background(
+                            MaterialTheme.colorScheme.tertiary).weight(0.3f))
+//                Text(id.toString(), modifier = Modifier.weight(0.1f), fontSize = tableFont)
+                        Text(operation.operation_name, modifier = Modifier.weight(1.3f), fontSize = 14.sp)
+                        Text(operation.duration_sec.toString(), modifier = Modifier.weight(0.7f), fontSize = 14.sp)
+                        Text("%.2f".format((operation.duration_sec / 60f)), modifier = Modifier.weight(0.7f), fontSize = 14.sp)
+                    }
+                }
+            }
+
         }
     }
 }
 
-class PartsViewModelFactory(val application: Application):
+class OperationsViewModelFactory(val application: Application):
     ViewModelProvider.Factory{
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return PartsViewModel(application) as T
+        return OperationsViewModel(application) as T
     }
 }

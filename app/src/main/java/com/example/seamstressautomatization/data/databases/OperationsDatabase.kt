@@ -4,26 +4,25 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.seamstressautomatization.data.DAOs.ClothesDao
-import com.example.seamstressautomatization.data.DAOs.PartsDao
-import com.example.seamstressautomatization.data.entities.Part
+import com.example.seamstressautomatization.data.DAOs.OperationDao
+import com.example.seamstressautomatization.data.entities.Operation
 
-@Database(entities = [Part::class], version = 1, exportSchema = false)
-abstract class PartsDatabase: RoomDatabase() {
-    abstract fun partsDao(): PartsDao
+@Database(entities = [Operation::class], version = 1, exportSchema = false)
+abstract class OperationsDatabase: RoomDatabase() {
+    abstract fun operationsDao(): OperationDao
 
     companion object {
 
-        private var Instance: PartsDatabase? = null
+        private var Instance: OperationsDatabase? = null
 
-        fun getDatabase(context: Context): PartsDatabase {
+        fun getDatabase(context: Context): OperationsDatabase {
             synchronized(this) {
                 var instance = Instance
                 if (instance == null) {
                     instance = Room.databaseBuilder(
                         context.applicationContext,
-                        PartsDatabase::class.java,
-                        "parts"
+                        OperationsDatabase::class.java,
+                        "operations"
                     ).fallbackToDestructiveMigration()
                         .build()
                     Instance = instance

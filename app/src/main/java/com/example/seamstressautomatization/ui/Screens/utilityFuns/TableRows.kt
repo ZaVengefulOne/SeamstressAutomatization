@@ -1,11 +1,8 @@
 package com.example.seamstressautomatization.ui.Screens.utilityFuns
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -19,7 +16,6 @@ import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.colorScheme
-import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.runtime.Composable
@@ -27,27 +23,27 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun TitleRow(head1: String, head2: String, head3: String) {
-    val uniFont = 18.sp
+fun TitleRow(head1: String, head2: String, head3: String, fontSize: TextUnit) {
     Row(
         modifier = Modifier
             .background(MaterialTheme.colorScheme.primary)
             .fillMaxWidth()
             .padding(5.dp)
     ) {
-        Text(text= "" ,color = colorScheme.surface, modifier = Modifier.weight(0.1f))
-//        Text(head1, color = MaterialTheme.colorScheme.surface,
-//            modifier = Modifier
-//                .weight(0.1f), fontSize = uniFont)
+//        Text(text= "" ,color = colorScheme.surface, modifier = Modifier.weight(0.1f))
+        Text(head1, color = MaterialTheme.colorScheme.surface,
+            modifier = Modifier
+                .weight(0.3f), fontSize = fontSize)
         Text(head2, color = MaterialTheme.colorScheme.surface,
             modifier = Modifier
-                .weight(0.1f), fontSize = uniFont)
+                .weight(0.4f), fontSize = fontSize)
         Text(head3, color = MaterialTheme.colorScheme.surface,
-            modifier = Modifier.weight(0.1f), fontSize = uniFont)
+            modifier = Modifier.weight(0.4f), fontSize = fontSize)
     }
 }
 

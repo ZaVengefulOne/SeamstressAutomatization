@@ -27,9 +27,9 @@ object Constants {
             route = "clothes"
         ),
         BottomNavItem(
-            label = "Изделия",
+            label = "Операции",
             icon = Icons.Filled.Build,
-            route = "parts"
+            route = "operations"
         )
 
     )

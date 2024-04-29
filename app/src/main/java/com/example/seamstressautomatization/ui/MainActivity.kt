@@ -28,12 +28,12 @@ import com.example.seamstressautomatization.ui.Screens.ClothSetup
 import com.example.seamstressautomatization.ui.Screens.ClothViewModelFactory
 import com.example.seamstressautomatization.ui.Screens.Main
 import com.example.seamstressautomatization.ui.Screens.MainViewModelFactory
-import com.example.seamstressautomatization.ui.Screens.PartsSetup
-import com.example.seamstressautomatization.ui.Screens.PartsViewModelFactory
+import com.example.seamstressautomatization.ui.Screens.OperationsSetup
+import com.example.seamstressautomatization.ui.Screens.OperationsViewModelFactory
 import com.example.seamstressautomatization.ui.theme.SeamstressAutomatizationTheme
 import com.example.seamstressautomatization.ui.viewmodels.ClothesViewModel
 import com.example.seamstressautomatization.ui.viewmodels.HomeViewModel
-import com.example.seamstressautomatization.ui.viewmodels.PartsViewModel
+import com.example.seamstressautomatization.ui.viewmodels.OperationsViewModel
 import com.example.seamstressautomatization.ui.viewmodels.StuffViewModel
 
 class MainActivity : ComponentActivity() {
@@ -72,9 +72,9 @@ class MainActivity : ComponentActivity() {
                                     )
                                 )
                             },
-                            partsViewModel = LocalViewModelStoreOwner.current?.let {
+                            operationsViewModel = LocalViewModelStoreOwner.current?.let {
                                 viewModel (
-                                    it, "PartsViewModel", PartsViewModelFactory(
+                                    it, "OperationsViewModel", OperationsViewModelFactory(
                                         LocalContext.current.applicationContext as Application
                                     )
                                 )
@@ -100,7 +100,7 @@ fun NavHostContainer(
     navController: NavHostController,
     stuffViewModel: StuffViewModel?,
     clothesViewModel: ClothesViewModel?,
-    partsViewModel: PartsViewModel?,
+    operationsViewModel: OperationsViewModel?,
     homeViewModel: HomeViewModel?,
     padding: PaddingValues,
 ) {
@@ -138,9 +138,9 @@ fun NavHostContainer(
                 }
             }
 
-            composable("parts") {
-                if (partsViewModel != null) {
-                    PartsSetup(partsViewModel)
+            composable("operations") {
+                if (operationsViewModel != null) {
+                    OperationsSetup(operationsViewModel)
                 }
             }
         })

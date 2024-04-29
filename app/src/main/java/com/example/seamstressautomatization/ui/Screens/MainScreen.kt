@@ -72,20 +72,20 @@ import com.example.seamstressautomatization.utilities.Constants
 @Composable
 fun Main(navController: NavController, homeViewModel: HomeViewModel) {
     val allStuff by homeViewModel.allStuff.observeAsState(listOf())
-    val allParts by homeViewModel.allParts.observeAsState(listOf())
+    val allOperations by homeViewModel.allOperations.observeAsState(listOf())
     val context = LocalContext.current
     var isMenuVisible by remember { mutableStateOf(false) }
     var enteredValue by remember { mutableIntStateOf(0)}
     var selectedStuffName by remember { mutableStateOf(String())}
-    var selectedPartName by remember { mutableStateOf(String())}
+    var selectedOperationName by remember { mutableStateOf(String())}
     var updatingStuffId by remember { mutableIntStateOf(0)}
-    var updatingPartModifier by remember { mutableFloatStateOf(0f)}
+    var updatingPartModifier by remember { mutableIntStateOf(0) }
     var baseSalary by remember { mutableFloatStateOf(0f) }
     var timeAmount by remember { mutableIntStateOf(0) }
     var nameExpanded by remember {
         mutableStateOf(false)
     }
-    var partExpanded by remember {
+    var operationsExpanded by remember {
         mutableStateOf(false)
     }
     var amountExpanded by remember {
@@ -102,7 +102,7 @@ fun Main(navController: NavController, homeViewModel: HomeViewModel) {
         ) {
             val list = allStuff
             item {
-                TitleRow(head1 = "Номер", head2 = "Имя", head3 = "Зарплата")
+                TitleRow(head1 = "Номер", head2 = "Имя", head3 = "Зарплата", fontSize = 18.sp)
             }
             items(list) { stuff ->
                 TableRow(
@@ -199,31 +199,31 @@ fun Main(navController: NavController, homeViewModel: HomeViewModel) {
                                     }
                                 }
                             }
-                                ExposedDropdownMenuBox(expanded = partExpanded, onExpandedChange = { partExpanded = !partExpanded}, modifier = Modifier
+                                ExposedDropdownMenuBox(expanded = operationsExpanded, onExpandedChange = { operationsExpanded = !operationsExpanded}, modifier = Modifier
                                     .weight(1f)
                                     .padding(8.dp)) {
                                     OutlinedTextField(
-                                        value = selectedPartName,
+                                        value = selectedOperationName,
                                         onValueChange = {},
                                         readOnly = true,
                                         trailingIcon = {
                                             ExposedDropdownMenuDefaults.TrailingIcon(
-                                                expanded = partExpanded
+                                                expanded = operationsExpanded
                                             )
                                         },
                                         modifier = Modifier
                                             .menuAnchor()
                                     )
                                     ExposedDropdownMenu(
-                                        expanded = partExpanded,
+                                        expanded = operationsExpanded,
                                         onDismissRequest = {},
                                     ) {
-                                        allParts.forEach { item ->
+                                        allOperations.forEach { item ->
                                             androidx.compose.material3.DropdownMenuItem(
-                                                text = { Text(text = item.part_name) },
+                                                text = { Text(text = item.operation_name) },
                                                 onClick = {
-                                                    selectedPartName = item.part_name
-                                                    updatingPartModifier = item.part_base_payment
+                                                    selectedOperationName = item.operation_name
+                                                    updatingPartModifier = item.duration_sec
                                                     nameExpanded = false
                                                 })
                                         }
@@ -243,7 +243,7 @@ fun Main(navController: NavController, homeViewModel: HomeViewModel) {
                                 )
                             )
                             isMenuVisible = false
-                            selectedPartName = ""
+                            selectedOperationName = ""
                             enteredValue = 0
                             selectedStuffName = ""
                         }, colors = ButtonDefaults.buttonColors(backgroundColor = colorScheme.primary)) {

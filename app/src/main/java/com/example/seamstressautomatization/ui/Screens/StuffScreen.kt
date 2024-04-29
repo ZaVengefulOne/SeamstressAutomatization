@@ -159,7 +159,7 @@ fun Stuff(allStuff: List<Stuff>, searchResults: List<Stuff>, viewModel: StuffVie
     ) {
         val list = if (searching) searchResults else allStuff
         item {
-            TitleRow(head1 = "Номер", head2 = "ФИО", head3 = "Зарплата")
+            TitleRow(head1 = "Номер", head2 = "ФИО", head3 = "Зарплата", fontSize = 18.sp)
         }
         items(list) { stuff ->
             TableRow(

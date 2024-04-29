@@ -2,34 +2,32 @@ package com.example.seamstressautomatization.data.repositories
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.seamstressautomatization.data.DAOs.ClothesDao
-import com.example.seamstressautomatization.data.DAOs.PartsDao
-import com.example.seamstressautomatization.data.entities.Cloth
-import com.example.seamstressautomatization.data.entities.Part
+import com.example.seamstressautomatization.data.DAOs.OperationDao
+import com.example.seamstressautomatization.data.entities.Operation
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
-class PartsRepository(private val partsDao: PartsDao) {
-    val allParts: LiveData<List<Part>> = partsDao.getAllItems()
-    val searchResults = MutableLiveData<List<Part>>()
+class OperationsRepository(private val operationDao: OperationDao) {
+    val allOperations: LiveData<List<Operation>> = operationDao.getAllItems()
+    val searchResults = MutableLiveData<List<Operation>>()
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
 
-    fun insertPart(newPart: Part){
+    fun insertOperation(newOperation: Operation){
         coroutineScope.launch (Dispatchers.IO){
-            partsDao.insert(newPart)
+            operationDao.insert(newOperation)
         }
     }
 
-    fun deletePart(name: String) {
+    fun deleteOperation(name: String) {
         coroutineScope.launch(Dispatchers.IO) {
-            partsDao.delete(name)
+            operationDao.delete(name)
         }
     }
 
-    fun findPart(name: String) {
+    fun findOperation(name: String) {
         coroutineScope.launch(Dispatchers.Main) {
             searchResults.value = asyncFind(name).await()
         }
@@ -37,12 +35,12 @@ class PartsRepository(private val partsDao: PartsDao) {
 
     fun deleteAll(){
         coroutineScope.launch(Dispatchers.IO) {
-            partsDao.deleteAll()
+            operationDao.deleteAll()
         }
     }
 
-    private fun asyncFind(name: String): Deferred<List<Part>?> =
+    private fun asyncFind(name: String): Deferred<List<Operation>?> =
         coroutineScope.async(Dispatchers.IO) {
-            return@async partsDao.getItem(name)
+            return@async operationDao.getItem(name)
         }
 }

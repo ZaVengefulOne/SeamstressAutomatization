@@ -8,5 +8,5 @@ data class Cloth(
     @PrimaryKey(autoGenerate = true)
     var cloth_id: Int,
     var cloth_name : String,
-    var base_cloth_payment : Float
+    var opertaions_list : List<String>
 )
