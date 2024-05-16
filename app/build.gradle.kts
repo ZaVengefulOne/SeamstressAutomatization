@@ -61,10 +61,22 @@ allprojects {
 }
 
 dependencies {
+//    //EasyPermissions
+//    implementation("pub.devrel:easypermissions:3.0.0")
+//    implementation("pub.devrel:easypermissions:2.0.1")
+//    implementation ("com.vmadalin:easypermissions-ktx:1.0.0")
+
+    //Excel
+    implementation("org.apache.poi:poi:5.2.3")
+    implementation("org.apache.poi:poi-ooxml:5.2.3")
+        //implementation("org.apache.poi:ooxml-schemas:1.4")
+
+    //JSON
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.1")
 
     //Room
     val room_version = "2.6.1"
+
     implementation("androidx.room:room-runtime:$room_version")
     ksp("androidx.room:room-compiler:$room_version")
     implementation("androidx.room:room-ktx:$room_version")

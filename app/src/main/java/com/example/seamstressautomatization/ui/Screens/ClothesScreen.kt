@@ -112,50 +112,56 @@ fun Clothes(allClothes: List<Cloth>, allOperations: List<Operation>, searchResul
                 )
             }
         }
-    Row(
-        horizontalArrangement = Arrangement.SpaceEvenly,
-        verticalAlignment = Alignment.Bottom,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(10.dp)
-            .weight(1f)
-    ) {
-        IconButton(onClick = {
-            isMenuVisible = true
-        }) {
-            Icon(Icons.Filled.Add, contentDescription = "add cloth")
-        }
+        Column (verticalArrangement = Arrangement.Bottom) {
 
-        IconButton(onClick = {
-            searching = true
-            viewModel.findCloth(clothName)
-        }) {
-            Icon(Icons.Filled.Search, contentDescription = "search clothes")
-        }
+            Row(
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                verticalAlignment = Alignment.Bottom,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(10.dp)
+                    .weight(1f)
+            ) {
+                IconButton(onClick = {
+                    isMenuVisible = true
+                }) {
+                    Icon(Icons.Filled.Add, contentDescription = "add cloth")
+                }
 
-        IconButton(onClick = {
-            searching = false
-            viewModel.deleteCloth(clothName)
-            viewModel.id_count--
-        }) {
-            Icon(Icons.Filled.Delete, contentDescription = "delete cloth")
-        }
+                IconButton(onClick = {
+                    searching = true
+                    viewModel.findCloth(clothName)
+                }) {
+                    Icon(Icons.Filled.Search, contentDescription = "search clothes")
+                }
 
-        IconButton(onClick = {
-            searching = false
-            clothName = ""
-            chosenOperations = mutableListOf<String>()
-        }) {
-            Icon(Icons.Filled.Clear, contentDescription = "clear field")
-        }
+                IconButton(onClick = {
+                    searching = false
+                    viewModel.deleteCloth(clothName)
+                    viewModel.id_count--
+                }) {
+                    Icon(Icons.Filled.Delete, contentDescription = "delete cloth")
+                }
 
-        Button(onClick = {
-            viewModel.deleteAll()
-            viewModel.id_count = 0
-        }, colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colorScheme.primary)) {
-            Text(text = "Очистить таблицу", color = Color.Red, fontSize = 10.sp)
+                IconButton(onClick = {
+                    searching = false
+                    clothName = ""
+                    chosenOperations = mutableListOf<String>()
+                }) {
+                    Icon(Icons.Filled.Clear, contentDescription = "clear field")
+                }
+
+                Button(
+                    onClick = {
+                        viewModel.deleteAll()
+                        viewModel.id_count = 0
+                    },
+                    colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colorScheme.primary)
+                ) {
+                    Text(text = "Очистить таблицу", color = Color.Red, fontSize = 10.sp)
+                }
+            }
         }
-    }
 } else {
         Column(
             verticalArrangement = Arrangement.Bottom,
